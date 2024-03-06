@@ -1,2 +1,2 @@
 # langchain-chat-service
-Langchain, Django, Hexagonal Architecture
+Langchain, ChatGPT, Hexagonal Architecture
