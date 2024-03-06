@@ -1,10 +1,11 @@
-from dataclasses import dataclass
+from dataclasses import field
 from typing import Any, TypeVar
 
+EntityType = TypeVar("EntityType", bound="Entity")
 
-@dataclass(kw_only=True)
+
 class Entity:
-    id: int | None = None
+    id: int = field(init=False)
 
     def __eq__(self, other: Any) -> bool:
         if isinstance(other, type(self)):
@@ -13,6 +14,3 @@ class Entity:
 
     def __hash__(self):
         return hash(self.id)
-
-
-EntityType = TypeVar("EntityType", bound=Entity)
