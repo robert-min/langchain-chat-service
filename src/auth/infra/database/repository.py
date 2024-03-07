@@ -2,9 +2,9 @@ from typing import List
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import NoResultFound
+from auth.domain.entity import Auth
 from auth.infra.database.model import Account
 from auth.infra.database.mapper import AuthMapper
-from auth.domain.entity import Auth
 from shared.domain.exception import DBError
 from shared.domain.errorcode import RepositoryError
 
