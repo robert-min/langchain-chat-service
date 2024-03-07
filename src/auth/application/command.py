@@ -17,7 +17,8 @@ class AuthCommandUseCase:
         self.auth_repository = auth_repository
         self.sign_up_service = sign_up_service
         self.auth_query = auth_query
-        self.session = session
+        # TODO: 함수 dependency 시 실행 관련 문제 해결 필요
+        self.session = session()
 
     def sign_up_user(self, entity: Auth) -> Auth:
         # sign up user with encrypting user info.

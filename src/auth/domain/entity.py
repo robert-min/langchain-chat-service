@@ -7,7 +7,7 @@ from shared.domain.entity import Entity
 @dataclass(eq=False)
 class Auth(Entity):
     email: str
-    password: bytes = None
+    password: str | bytes = None
 
     @classmethod
     def new(cls, email: str, password: bytes = None) -> Auth:

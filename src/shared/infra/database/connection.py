@@ -11,7 +11,7 @@ def get_mongo_session():
     return client[settings.MONGO_DB_NAME]
 
 
-def get_postgre_session() -> Session:
+def get_postgre_session():
     engine = create_engine(
         settings.POSTGRESQL_CONNECTION_URL + settings.POSTGRESQL_DB_NAME,
         pool_size=5,
