@@ -13,3 +13,16 @@ class SignUpError(Enum):
         "message": "The user email is already created. Please sign up another email.",
         "log": "User service sign up fail with already existence email."
     }
+
+
+class LogInError(Enum):
+    NotFoundData = {
+        "code": status.HTTP_404_NOT_FOUND,
+        "message": "This account is not registered.",
+        "log": "User Error. Request non data on DB."
+    }
+    WrongPasswordError = {
+        "code": status.HTTP_401_UNAUTHORIZED,
+        "message": "The password is incorrect. Please check again..",
+        "log": "User request fail with wrong password."
+    }

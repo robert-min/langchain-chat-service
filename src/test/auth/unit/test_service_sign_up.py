@@ -2,7 +2,7 @@ import pytest
 from auth.domain.entity import Auth
 from auth.domain.service.sign_up import SignUpService
 from auth.domain.util.cipher import CipherManager
-from auth.domain.exception import AuthServiceError
+from auth.domain.exception import AuthError
 
 # Mock data
 EMAIL = "test@naver.com"
@@ -26,7 +26,7 @@ def test_cannot_sign_up_user_with_already_exist():
     auth_entity: Auth = Auth.new(EMAIL, PASSWORD)
 
     # then
-    with pytest.raises(AuthServiceError):
+    with pytest.raises(AuthError):
         # when : 회원가입 요청
         SignUpService().encrypt_user(auth_entity, [auth_entity])
 
@@ -37,6 +37,6 @@ def test_cannot_sign_up_user_with_with_wrong_email_pattern():
     auth_entity: Auth = Auth.new(WRONG_EMAIL, PASSWORD)
 
     # then
-    with pytest.raises(AuthServiceError):
+    with pytest.raises(AuthError):
         # when : 회원가입 요청
         SignUpService().encrypt_user(auth_entity, [])

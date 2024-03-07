@@ -41,10 +41,11 @@ def test_auth_repository_cannot_get_user_account_with_no_user(postgre_session):
     WRONG_EMAIL: str = "wrong@naver.com"
     auth_entity: Auth = Auth.new(WRONG_EMAIL)
 
-    # then : NoResultFound
-    with pytest.raises(DBError):
-        # when : 계정 조회
-        AuthRepository().get(postgre_session, auth_entity)
+    # when : 계정 조회
+    result = AuthRepository().get(postgre_session, auth_entity)
+
+    # then
+    assert not result
 
 
 @pytest.mark.order(2)

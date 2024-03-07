@@ -23,14 +23,14 @@ class AuthRepository:
         except Exception as e:
             raise DBError(**RepositoryError.DBProcess.value, err=e)
 
-    def get(self, session: Session, entity: Auth) -> Auth:
+    def get(self, session: Session, entity: Auth) -> Auth | None:
         try:
             with session:
                 query = select(Account).filter(Account.email == entity.email)
                 account_model = session.execute(query).scalar_one()
             return self.auth_mapper.to_entity(account_model)
         except NoResultFound:
-            raise DBError(**RepositoryError.NotFoundData.value)
+            return None
         except Exception as e:
             raise DBError(**RepositoryError.DBProcess.value, err=e)
 

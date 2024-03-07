@@ -1,7 +1,7 @@
 from shared.domain.exception import BaseHttpException
 
 
-class AuthServiceError(BaseHttpException):
+class AuthError(BaseHttpException):
     def __init__(
             self, code: int, message: str, log: str, err: Exception = None
             ) -> None:

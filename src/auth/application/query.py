@@ -11,7 +11,12 @@ class AuthQueryUseCase:
         session: Session
     ) -> None:
         self.auth_repository = auth_repository
-        self.session = session()
+        self.session = session
 
     def get_all_auth_info(self) -> List[Auth]:
-        return self.auth_repository.get_all(self.session)
+        with self.session() as session:
+            return self.auth_repository.get_all(session)
+
+    def get_auth_info(self, entity: Auth) -> Auth:
+        with self.session() as session:
+            return self.auth_repository.get(session, entity)

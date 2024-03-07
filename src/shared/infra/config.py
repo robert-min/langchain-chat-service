@@ -18,6 +18,7 @@ class EnvSettings(BaseSettings):
     )
     MONGO_DB_NAME: ClassVar[str] = os.environ.get('MONGO_DB_NAME')
     DEK_KEY: ClassVar[str] = os.environ.get('DEK_KEY')
+    TOKEN_KEY: ClassVar[str] = os.environ.get('TOKEN_KEY')
 
 
 # set config
