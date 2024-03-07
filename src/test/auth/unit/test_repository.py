@@ -1,10 +1,9 @@
 import pytest
 import base64
-from sqlalchemy import select
 from auth.domain.entity import Auth
-from auth.infra.database.model import Account
-from auth.infra.database.mapper import AuthMapper
-from sqlalchemy.exc import NoResultFound
+from shared.domain.exception import DBError
+from auth.infra.database.repository import AuthRepository
+
 
 # Mock data
 EMAIL = "test@naver.com"
@@ -12,19 +11,15 @@ PASSWORD = base64.b64encode(bytes("test1234", 'utf-8'))
 
 
 @pytest.mark.order(0)
-def test_auth_repository_can_insert_user_account(postgre_session):
+def test_auth_repository_can_create_user_account(postgre_session):
     # given
     auth_entity: Auth = Auth.new(EMAIL, PASSWORD)
 
     # when : 계정 등록
-    account_model: Account = AuthMapper().to_model(auth_entity)
-    with postgre_session as session:
-        session.add(account_model)
-        session.commit()
+    result = AuthRepository().create(postgre_session, auth_entity)
 
     # then
-    assert auth_entity.email == EMAIL
-    assert auth_entity.password == PASSWORD
+    assert result.email == EMAIL
 
 
 @pytest.mark.order(1)
@@ -33,15 +28,11 @@ def test_auth_repository_can_get_user_account(postgre_session):
     auth_entity: Auth = Auth.new(EMAIL)
 
     # when : 계정 조회
-    with postgre_session as session:
-        query = select(Account).filter(Account.email == auth_entity.email)
-        account_model = session.execute(query).scalar_one()
-
-        auth_entity = AuthMapper().to_entity(account_model)
+    result = AuthRepository().get(postgre_session, auth_entity)
 
     # then
-    assert auth_entity.email == EMAIL
-    assert auth_entity.password == PASSWORD
+    assert result.email == EMAIL
+    assert result.password == PASSWORD
 
 
 @pytest.mark.order(1)
@@ -51,13 +42,9 @@ def test_auth_repository_cannot_get_user_account_with_no_user(postgre_session):
     auth_entity: Auth = Auth.new(WRONG_EMAIL)
 
     # then : NoResultFound
-    with pytest.raises(NoResultFound):
+    with pytest.raises(DBError):
         # when : 계정 조회
-        with postgre_session as session:
-            query = select(Account).filter(Account.email == auth_entity.email)
-            account_model = session.execute(query).scalar_one()
-
-            auth_entity = AuthMapper().to_entity(account_model)
+        AuthRepository().get(postgre_session, auth_entity)
 
 
 @pytest.mark.order(2)
@@ -65,10 +52,7 @@ def test_auth_repository_can_get_all_user_account(postgre_session):
     # given
 
     # when : 계정 전체 조회
-    with postgre_session as session:
-        query = select(Account)
-        accout_model_list = session.execute(query).scalars()
-        auth_entity_list = AuthMapper().to_entity_list(accout_model_list)
+    auth_entity_list = AuthRepository().get_all(postgre_session)
 
     # then
     assert len(auth_entity_list) > 0
@@ -80,12 +64,7 @@ def test_auth_repository_can_delete_user_account(postgre_session):
     auth_entity: Auth = Auth.new(EMAIL)
 
     # when : 계정 삭제
-    with postgre_session as session:
-        query = select(Account).filter(Account.email == auth_entity.email)
-        account_model = session.execute(query).scalar_one()
-        if account_model:
-            session.delete(account_model)
-        session.commit()
+    result = AuthRepository().delete(postgre_session, auth_entity)
 
     # then
-    assert auth_entity.email == EMAIL
+    assert result.email == EMAIL
