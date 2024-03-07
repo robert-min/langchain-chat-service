@@ -9,6 +9,10 @@ load_dotenv()
 
 
 class EnvSettings(BaseSettings):
+    POSTGRESQL_CONNECTION_URL = os.environ.get(
+        'POSTGRESQL_CONNECTION_URL'
+    )
+    POSTGRESQL_DB_NAME: ClassVar[str] = os.environ.get('POSTGRESQL_DB_NAME')
     MONGO_CONNECTION_URL: ClassVar[str] = os.environ.get(
         'MONGO_CONNECTION_URL'
     )
