@@ -4,13 +4,13 @@ from auth.infra.database.model import Account as AccountModel
 
 
 class AuthMapper(ModelMapperInterface):
-    def to_entity(self, instance: AccountModel) -> AuthEntity:
+    def to_entity(self, model: AccountModel) -> AuthEntity:
         return AuthEntity(
-            email=instance.email,
-            password=instance.password,
+            email=model.email,
+            password=model.password,
         )
 
-    def to_instance(self, entity: AuthEntity) -> AccountModel:
+    def to_model(self, entity: AuthEntity) -> AccountModel:
         return AccountModel(
             email=entity.email,
             password=entity.password
