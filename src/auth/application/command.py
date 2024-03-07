@@ -1,6 +1,6 @@
 from typing import List
 from sqlalchemy.orm import Session
-from auth.domain.entity import Auth
+from auth.domain.entity import Auth, Token
 from auth.infra.database.repository import AuthRepository
 from auth.domain.service.sign_up import SignUpService
 from auth.domain.service.log_in import LogInService
@@ -31,7 +31,7 @@ class AuthCommandUseCase:
         with self.session() as session:
             return self.auth_repository.create(session, auth)
 
-    def log_in_user(self, entity: Auth) -> Auth:
+    def log_in_user(self, entity: Auth) -> Token:
         # check user data
         user_info: Auth | None = self.auth_query.get_auth_info(entity)
         if not user_info:

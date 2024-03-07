@@ -44,7 +44,7 @@ def test_application_can_log_in_user(command):
     result = command.log_in_user(auth_entity)
 
     # then
-    assert result
+    assert result.id == EMAIL
 
 
 @pytest.mark.order(5)

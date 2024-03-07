@@ -12,3 +12,13 @@ class Auth(Entity):
     @classmethod
     def new(cls, email: str, password: bytes = None) -> Auth:
         return cls(email=email, password=password)
+
+
+@dataclass
+class Token:
+    id: str
+    token: str
+
+    @classmethod
+    def new(cls, email: str, token: str) -> Token:
+        return cls(id=email, token=token)
