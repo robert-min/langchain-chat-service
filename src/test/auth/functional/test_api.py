@@ -126,7 +126,7 @@ async def test_auth_cannot_log_in_user_with_not_existence_user(client):
     # then
     assert response.status_code == 404
     assert response.json()["meta"]["message"] == "This account is not registered."
-    
+
 
 @pytest.mark.order(4)
 @pytest.mark.asyncio
